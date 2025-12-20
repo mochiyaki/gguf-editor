@@ -13,6 +13,29 @@ A Visual Studio Code extension for viewing and inspecting GGUF (GGML Universal F
 - **Dark/Light Mode Toggle**: Switch between dark and light themes with a fixed toggle button
 - **Theme Persistence**: Your theme preference is saved and restored on subsequent opens
 
+## Project Structure
+
+```
+gguf-editor/
+├── src/
+│   ├── extension.ts          # Main extension entry point
+│   ├── utils.ts              # Utility functions for GGUF processing and webview content
+│   └── constants.ts          # HTML templates and CSS constants
+├── assets/
+│   └── images/
+│       └── icon.png          # Extension icon
+├── test/
+│   └── extension.test.ts     # Extension tests
+├── package.json              # Extension configuration and dependencies
+├── tsconfig.json             # TypeScript configuration
+├── esbuild.js                # Build configuration
+├── eslint.config.mjs         # ESLint configuration
+├── CHANGELOG.md              # Release history
+├── LICENSE                   # MIT License
+├── README.md                 # This file
+└── PROJECT.md                # Project documentation
+```
+
 ## Requirements
 
 - Visual Studio Code version 1.107.0 or higher
@@ -98,4 +121,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Release Notes
 
 See [CHANGELOG.md](CHANGELOG.md) for details on recent changes and updates.
-# gguf-editor

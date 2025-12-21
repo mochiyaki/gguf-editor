@@ -8,6 +8,10 @@ This extension provides developers, researchers, and AI enthusiasts with a power
 
 ## Key Features
 
+- **New Feature A**: Description of feature A.
+- **New Feature B**: Description of feature B.
+- **New Feature C**: Description of feature C.
+
 ### Core Functionality
 - **Metadata Inspection**: View all metadata key-value pairs stored in the GGUF file
 - **Tensor Information**: Display tensor names, shapes, and quantization types
@@ -37,20 +41,20 @@ The extension follows a typical VS Code extension architecture with:
 
 ### Dependencies
 The project relies on several key dependencies:
-- `@huggingface/gguf`: Core library for parsing and working with GGUF format files
+- `@gguf/editor`: Core library for parsing and working with GGUF format files
 - VS Code Extension API: For integrating with the editor environment
 - Webview capabilities: For rendering interactive HTML content within VS Code
 
 ### Data Processing Flow
 1. User opens a `.gguf` file via context menu or command palette
 2. Extension creates a webview panel with loading indicator
-3. `getGGUFInfo()` function parses the GGUF file using `@huggingface/gguf`
+3. `getGGUFInfo()` function parses the GGUF file using `@gguf/editor`
 4. Metadata and tensor information are extracted and formatted
 5. HTML template is populated with the parsed data
 6. Webview displays the structured content with search and edit capabilities
 
 ### File Format Handling
-The extension uses the `@huggingface/gguf` library to parse GGUF files, which:
+The extension uses the `@gguf/editor` library to render GGUF files, which:
 - Reads file headers and metadata sections
 - Extracts tensor information including names, shapes, and quantization types
 - Handles various data types within the GGUF format
@@ -152,5 +156,15 @@ Potential future improvements include:
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Version:** 1.2.0
+
+**Author:** Your Name <you@example.com>
+
+**Repository:** https://github.com/yourusername/gguf-editor
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -159,6 +159,7 @@ export const htmlContentTemplate = `<!DOCTYPE html>
             <th>Tensors</th>
             <th>Shape</th>
             <th>Precision</th>
+            <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -187,6 +188,10 @@ export const htmlContentTemplate = `<!DOCTYPE html>
                 metadata[key] = input.value;
             });
             vscode.postMessage({ command: "save", metadata: metadata });
+        }
+
+        function removeTensor(tensorName) {
+            vscode.postMessage({ command: "removeTensor", tensorName: tensorName });
         }
 
         function toggleTheme() {

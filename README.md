@@ -6,6 +6,7 @@ A Visual Studio Code extension for viewing and inspecting GGUF (GGML Universal F
 
 - **Metadata Inspection**: View all metadata key-value pairs stored in the GGUF file
 - **Tensor Information**: Display tensor names, shapes, and quantization types
+- **Tensor Removal**: Temporarily hide selected tensors from the view for focused inspection
 - **Search Functionality**: Search through metadata and tensor information
 - **Array Truncation**: Configurable maximum number of array elements to display
 - **Context Menu Integration**: Right-click on `.gguf` files in the explorer to open them
@@ -62,13 +63,13 @@ The extension opens a webview panel displaying:
 - **File Header**: Shows the filename
 - **Search Bar**: Filter metadata and tensors by search term
 - **Metadata Table**: Key-value pairs from the file's metadata
-- **Tensors Table**: Information about each tensor including name, shape, and precision type
+- **Tensors Table**: Information about each tensor including name, shape, precision type, and removal actions
 
 ### Search Functionality
 
 - Enter text in the search box to filter results
 - Search works across metadata keys/values and tensor names/shapes/precision
-- Click "Reset" to clear the search and show all data
+- Click "Reset" to clear the search and restore any temporarily removed tensors
 
 ## Extension Settings
 

@@ -5,10 +5,11 @@ import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType } from "@hug
 
 export async function getWebviewContent(
   uri: vscode.Uri,
-  searchTerm: string = ""
+  searchTerm: string = "",
+  removedTensors: Set<string> = new Set()
 ) {
   const fileName = path.basename(uri.fsPath);
-  const { metadataRows, tensorRows } = await getGGUFInfo(uri, searchTerm);
+  const { metadataRows, tensorRows } = await getGGUFInfo(uri, searchTerm, removedTensors);
 
   const content = formatTemplate(htmlContentTemplate, {
     fileName,
@@ -23,7 +24,7 @@ export async function getWebviewContent(
   };
 }
 
-async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
+async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "", removedTensors: Set<string> = new Set()) {
   const { metadata, tensorInfos } = await gguf(uri.fsPath, {
     allowLocalFile: true,
   });
@@ -43,6 +44,7 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
     .join("");
 
   const tensorRows = tensorInfos
+    .filter((tensorInfo) => !removedTensors.has(tensorInfo.name))
     .filter((tensorInfo) => {
       return (
         tensorInfo.name.includes(searchTerm) ||
@@ -56,6 +58,7 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
           <td>${tensorInfo.name}</td>
           <td>[${tensorInfo.shape.join(", ")}]</td>
           <td>${GGMLQuantizationType[tensorInfo.dtype]}</td>
+          <td><button onclick="removeTensor('${tensorInfo.name}')">Remove</button></td>
         </tr>`
     )
     .join("");
@@ -113,7 +116,7 @@ function parseValue(value: string, type: GGUFValueType): any {
   }
 }
 
-export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>): Promise<void> {
+export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>, removedTensors: Set<string> = new Set()): Promise<void> {
   const fs = require('fs');
 
   // Parse the original file with typed metadata

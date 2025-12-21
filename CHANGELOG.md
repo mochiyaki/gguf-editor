@@ -2,8 +2,16 @@
 
 All notable changes to the "gguf-editor" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
+## Releases
 
 - Initial release
+- 0.0.1
+  - viewer mode only
+- 0.0.2
+  - add dark/light toggle
+  - add Save Changes function
+- 0.0.3
+  - fix bug on Save Changes
+  - edit gguf file size limit < 2GB (temp)
+- 0.0.4
+  - able to remove selected tensor

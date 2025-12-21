@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { htmlContentTemplate, replaceMark } from "./constants";
-import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType } from "@huggingface/gguf";
+import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@huggingface/gguf";
 
 export async function getWebviewContent(
   uri: vscode.Uri,
@@ -148,20 +148,34 @@ export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<
       const index = parseInt(indexStr, 10);
       if (tensorInfos[index] && tensorInfos[index].name !== newName) {
         const oldName = tensorInfos[index].name;
-        // Try to replace the name in the buffer (simple string replacement)
-        // This is a basic approach that assumes names are stored as-is
-        const oldNameBytes = Buffer.from(oldName, 'utf8');
-        const newNameBytes = Buffer.from(newName, 'utf8');
+        // Find the position of the old name in the tensor info section
+        const tensorInfoStart = tensorInfoByteRange[0];
+        const tensorInfoEnd = tensorInfoByteRange[1];
+        const tensorInfoSection = originalBuffer.subarray(tensorInfoStart, tensorInfoEnd);
 
-        // Only replace if lengths match to avoid corrupting the format
-        if (oldNameBytes.length === newNameBytes.length) {
-          const bufferString = originalBuffer.toString('binary');
-          const oldNameBinary = oldNameBytes.toString('binary');
-          const newNameBinary = newNameBytes.toString('binary');
+        // Look for the old name as null-terminated string
+        const oldNameBytes = Buffer.from(oldName + '\0', 'utf8');
+        const oldNameIndex = tensorInfoSection.indexOf(oldNameBytes);
 
-          if (bufferString.includes(oldNameBinary)) {
-            const newBufferString = bufferString.replace(oldNameBinary, newNameBinary);
-            originalBuffer = Buffer.from(newBufferString, 'binary');
+        if (oldNameIndex !== -1) {
+          const absolutePosition = tensorInfoStart + oldNameIndex;
+          const newNameBytes = Buffer.from(newName + '\0', 'utf8');
+
+          // If lengths match, do direct replacement
+          if (oldNameBytes.length === newNameBytes.length) {
+            newNameBytes.copy(originalBuffer, absolutePosition);
+          }
+          // If new name is shorter, replace and pad with nulls
+          else if (newNameBytes.length < oldNameBytes.length) {
+            newNameBytes.copy(originalBuffer, absolutePosition);
+            // Pad with nulls
+            originalBuffer.fill(0, absolutePosition + newNameBytes.length, absolutePosition + oldNameBytes.length);
+          }
+          // If new name is longer, truncate to fit (not ideal but better than failing)
+          else if (newNameBytes.length > oldNameBytes.length) {
+            const truncatedName = newName.substring(0, oldName.length);
+            const truncatedBytes = Buffer.from(truncatedName + '\0', 'utf8');
+            truncatedBytes.copy(originalBuffer, absolutePosition);
           }
         }
       }

@@ -5,6 +5,12 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
 ## Releases
 
 - Initial release (sort by latest)
+- 0.1.1
+  - clean up
+- 0.1.0
+  - update package
+- 0.0.9
+  - delete tensor
 - 0.0.8
   - bug fixing attempt
 - 0.0.7
@@ -24,4 +30,4 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
   - add dark/light toggle
   - add Save Changes function
 - 0.0.1
-  - viewer mode only
+  - viewer mode

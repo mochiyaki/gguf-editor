@@ -61,11 +61,15 @@ export function activate(context: vscode.ExtensionContext) {
             break;
           case "save":
             try {
-              await saveGGUFMetadata(uri, message.metadata, message.tensorNames);
+              await saveGGUFMetadata(uri, message.metadata, message.tensorNames, message.deletedTensors);
               vscode.window.showInformationMessage("GGUF metadata and tensor names saved successfully!");
             } catch (error) {
               vscode.window.showErrorMessage(`Failed to save GGUF file: ${error}`);
             }
+            break;
+          case "delete":
+            // For now, we'll just refresh the view. The actual deletion happens during save.
+            // In a future enhancement, we could maintain a list of deleted tensors in the webview state.
             break;
         }
         getWebviewContent(uri, searchTerm).then(({ htmlContent }) => {

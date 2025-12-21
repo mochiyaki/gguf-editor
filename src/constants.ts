@@ -159,6 +159,7 @@ export const htmlContentTemplate = `<!DOCTYPE html>
             <th>Tensors</th>
             <th>Shape</th>
             <th>Precision</th>
+            <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -194,7 +195,21 @@ export const htmlContentTemplate = `<!DOCTYPE html>
                 tensorNames[index] = input.value;
             });
 
-            vscode.postMessage({ command: "save", metadata: metadata, tensorNames: tensorNames });
+            vscode.postMessage({ command: "save", metadata: metadata, tensorNames: tensorNames, deletedTensors: deletedTensors });
+        }
+
+        let deletedTensors = [];
+
+        function deleteTensor(index) {
+            if (confirm('Are you sure you want to remove this tensor from the editor? This will exclude it when saving changes.')) {
+                // Remove the row from the DOM
+                const row = document.querySelector('tr[data-tensor-index="' + index + '"]');
+                if (row) {
+                    row.remove();
+                }
+                // Track deleted tensors
+                deletedTensors.push(index);
+            }
         }
 
         function toggleTheme() {

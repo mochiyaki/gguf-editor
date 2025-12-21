@@ -2,6 +2,8 @@
 
 A Visual Studio Code extension for viewing and inspecting GGUF (GGML Universal File Format) model files. GGUF is a binary format used for storing machine learning models, particularly those compatible with llama.cpp and similar inference engines.
 
+![screenshot](https://raw.githubusercontent.com/mochiyaki/gguf-editor/master/demo.gif)
+
 ## Features
 
 - **Metadata Inspection**: View all metadata key-value pairs stored in the GGUF file

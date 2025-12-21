@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { htmlContentTemplate, replaceMark } from "./constants";
-import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@huggingface/gguf";
+// import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@huggingface/gguf";
+import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@gguf/editor";
 
 export async function getWebviewContent(
   uri: vscode.Uri,
@@ -52,10 +53,11 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
     })
     .map(
       (tensorInfo, index) => `
-        <tr>
+        <tr data-tensor-index="${index}">
           <td><input type="text" class="tensor-name-input" data-index="${index}" value="${tensorInfo.name}" style="width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 4px;" /></td>
           <td>[${tensorInfo.shape.join(", ")}]</td>
           <td>${GGMLQuantizationType[tensorInfo.dtype]}</td>
+          <td><button class="delete-tensor-btn" data-index="${index}" onclick="deleteTensor(${index})" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">Delete</button></td>
         </tr>`
     )
     .join("");
@@ -113,7 +115,7 @@ function parseValue(value: string, type: GGUFValueType): any {
   }
 }
 
-export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>, updatedTensorNames?: Record<string, string>): Promise<void> {
+export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>, updatedTensorNames?: Record<string, string>, deletedTensors?: number[]): Promise<void> {
   const fs = require('fs');
 
   // Parse the original file with typed metadata

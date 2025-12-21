@@ -2,7 +2,7 @@
   "name": "gguf-editor",
   "displayName": "gguf editor",
   "description": "A VS Code extension for viewing and inspecting GGUF model files",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "publisher": "gguf",
   "author": {
     "name": "gguf",

@@ -14,4 +14,12 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
   - fix bug on Save Changes
   - edit gguf file size limit < 2GB (temp)
 - 0.0.4
+  - able to hide selected tensor
+- 0.0.5
   - able to remove selected tensor
+  - save it as new gguf file
+- 0.0.6
+  - try to fix the bug with BigInt(t.size)
+- 0.0.7
+  - withdraw the tensor removal function
+  - make tensor name editable instead

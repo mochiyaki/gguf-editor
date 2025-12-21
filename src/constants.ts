@@ -159,7 +159,6 @@ export const htmlContentTemplate = `<!DOCTYPE html>
             <th>Tensors</th>
             <th>Shape</th>
             <th>Precision</th>
-            <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -181,17 +180,21 @@ export const htmlContentTemplate = `<!DOCTYPE html>
         }
 
         function saveChanges() {
-            const inputs = document.querySelectorAll('.metadata-input');
+            const metadataInputs = document.querySelectorAll('.metadata-input');
             const metadata = {};
-            inputs.forEach(input => {
+            metadataInputs.forEach(input => {
                 const key = input.getAttribute('data-key');
                 metadata[key] = input.value;
             });
-            vscode.postMessage({ command: "save", metadata: metadata });
-        }
 
-        function removeTensor(tensorName) {
-            vscode.postMessage({ command: "removeTensor", tensorName: tensorName });
+            const tensorInputs = document.querySelectorAll('.tensor-name-input');
+            const tensorNames = {};
+            tensorInputs.forEach(input => {
+                const index = input.getAttribute('data-index');
+                tensorNames[index] = input.value;
+            });
+
+            vscode.postMessage({ command: "save", metadata: metadata, tensorNames: tensorNames });
         }
 
         function toggleTheme() {

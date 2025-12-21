@@ -5,11 +5,10 @@ import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType } from "@hug
 
 export async function getWebviewContent(
   uri: vscode.Uri,
-  searchTerm: string = "",
-  removedTensors: Set<string> = new Set()
+  searchTerm: string = ""
 ) {
   const fileName = path.basename(uri.fsPath);
-  const { metadataRows, tensorRows } = await getGGUFInfo(uri, searchTerm, removedTensors);
+  const { metadataRows, tensorRows } = await getGGUFInfo(uri, searchTerm);
 
   const content = formatTemplate(htmlContentTemplate, {
     fileName,
@@ -24,7 +23,7 @@ export async function getWebviewContent(
   };
 }
 
-async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "", removedTensors: Set<string> = new Set()) {
+async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
   const { metadata, tensorInfos } = await gguf(uri.fsPath, {
     allowLocalFile: true,
   });
@@ -44,7 +43,6 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "", removedTens
     .join("");
 
   const tensorRows = tensorInfos
-    .filter((tensorInfo) => !removedTensors.has(tensorInfo.name))
     .filter((tensorInfo) => {
       return (
         tensorInfo.name.includes(searchTerm) ||
@@ -53,12 +51,11 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "", removedTens
       );
     })
     .map(
-      (tensorInfo) => `
+      (tensorInfo, index) => `
         <tr>
-          <td>${tensorInfo.name}</td>
+          <td><input type="text" class="tensor-name-input" data-index="${index}" value="${tensorInfo.name}" style="width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 4px;" /></td>
           <td>[${tensorInfo.shape.join(", ")}]</td>
           <td>${GGMLQuantizationType[tensorInfo.dtype]}</td>
-          <td><button onclick="removeTensor('${tensorInfo.name}')">Remove</button></td>
         </tr>`
     )
     .join("");
@@ -116,7 +113,7 @@ function parseValue(value: string, type: GGUFValueType): any {
   }
 }
 
-export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>, removedTensors: Set<string> = new Set()): Promise<void> {
+export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<string, any>, updatedTensorNames?: Record<string, string>): Promise<void> {
   const fs = require('fs');
 
   // Parse the original file with typed metadata
@@ -132,8 +129,45 @@ export async function saveGGUFMetadata(uri: vscode.Uri, updatedMetadata: Record<
     }
   }
 
+  // Update tensor names if provided
+  if (updatedTensorNames) {
+    for (const [indexStr, newName] of Object.entries(updatedTensorNames)) {
+      const index = parseInt(indexStr, 10);
+      if (tensorInfos[index]) {
+        tensorInfos[index].name = newName;
+      }
+    }
+  }
+
   // Read the original file as buffer
-  const originalBuffer = fs.readFileSync(uri.fsPath);
+  let originalBuffer = fs.readFileSync(uri.fsPath);
+
+  // Apply tensor name changes by modifying the buffer directly
+  if (updatedTensorNames) {
+    for (const [indexStr, newName] of Object.entries(updatedTensorNames)) {
+      const index = parseInt(indexStr, 10);
+      if (tensorInfos[index] && tensorInfos[index].name !== newName) {
+        const oldName = tensorInfos[index].name;
+        // Try to replace the name in the buffer (simple string replacement)
+        // This is a basic approach that assumes names are stored as-is
+        const oldNameBytes = Buffer.from(oldName, 'utf8');
+        const newNameBytes = Buffer.from(newName, 'utf8');
+
+        // Only replace if lengths match to avoid corrupting the format
+        if (oldNameBytes.length === newNameBytes.length) {
+          const bufferString = originalBuffer.toString('binary');
+          const oldNameBinary = oldNameBytes.toString('binary');
+          const newNameBinary = newNameBytes.toString('binary');
+
+          if (bufferString.includes(oldNameBinary)) {
+            const newBufferString = bufferString.replace(oldNameBinary, newNameBinary);
+            originalBuffer = Buffer.from(newBufferString, 'binary');
+          }
+        }
+      }
+    }
+  }
+
   const originalFileBlob = new Blob([originalBuffer]);
 
   // Build the new header with updated metadata

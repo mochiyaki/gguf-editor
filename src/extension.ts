@@ -30,8 +30,6 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("gguf-editor.open", (uri: vscode.Uri) => {
-      const removedTensors = new Set<string>();
-
       const panel = vscode.window.createWebviewPanel(
         "gguf-editor", // Identifies the type of the webview. Used internally
         "gguf-editor", // Title of the panel displayed to the user
@@ -44,16 +42,14 @@ export function activate(context: vscode.ExtensionContext) {
 
       panel.webview.html = htmlContentLoading;
 
-      const updateContent = (searchTerm: string = "") => {
-        getWebviewContent(uri, searchTerm, removedTensors).then(({ htmlContent, fileName }) => {
+      getWebviewContent(uri)
+        .then(({ htmlContent, fileName }) => {
           panel.title = `GGUF: ${fileName}`;
           panel.webview.html = htmlContent;
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.error("Failed to get webview content:", error);
         });
-      };
-
-      updateContent();
 
       panel.webview.onDidReceiveMessage(async (message) => {
         let searchTerm = "";
@@ -62,21 +58,19 @@ export function activate(context: vscode.ExtensionContext) {
             searchTerm = message.text;
             break;
           case "reset":
-            removedTensors.clear();
-            break;
-          case "removeTensor":
-            removedTensors.add(message.tensorName);
             break;
           case "save":
             try {
-              await saveGGUFMetadata(uri, message.metadata, removedTensors);
-              vscode.window.showInformationMessage("GGUF metadata saved successfully!");
+              await saveGGUFMetadata(uri, message.metadata, message.tensorNames);
+              vscode.window.showInformationMessage("GGUF metadata and tensor names saved successfully!");
             } catch (error) {
               vscode.window.showErrorMessage(`Failed to save GGUF file: ${error}`);
             }
             break;
         }
-        updateContent(searchTerm);
+        getWebviewContent(uri, searchTerm).then(({ htmlContent }) => {
+          panel.webview.html = htmlContent;
+        });
       });
     })
   );

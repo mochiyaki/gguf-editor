@@ -1,8 +1,8 @@
 {
   "name": "gguf-editor",
   "displayName": "gguf editor",
-  "description": "A VS Code extension for viewing, inspecting and editing GGUF model files",
-  "version": "0.1.1",
+  "description": "An extension for viewing, inspecting and editing GGUF model files",
+  "version": "0.1.2",
   "publisher": "gguf",
   "author": {
     "name": "gguf",
@@ -16,7 +16,7 @@
   },
   "icon": "assets/images/icon.png",
   "engines": {
-    "vscode": "^1.107.0"
+    "vscode": "^1.105.1"
   },
   "categories": [
     "Other"
@@ -68,7 +68,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "@types/vscode": "^1.107.0",
+    "@types/vscode": "^1.105.1",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.2",

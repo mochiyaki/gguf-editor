@@ -5,6 +5,8 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
 ## Releases
 
 - Initial release (sort by latest)
+- 0.1.2
+  - adjust compatible version
 - 0.1.1
   - clean up
 - 0.1.0

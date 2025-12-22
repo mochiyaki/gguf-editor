@@ -7,16 +7,11 @@ The GGUF Editor is a Visual Studio Code extension designed for viewing and inspe
 This extension provides developers, researchers, and AI enthusiasts with a powerful tool to explore the structure and contents of GGUF files directly within their development environment. The extension supports viewing metadata, tensor information, searching capabilities, and even editing functionality for GGUF files.
 
 ## Key Features
-
-- **New Feature A**: Description of feature A.
-- **New Feature B**: Description of feature B.
-- **New Feature C**: Description of feature C.
-
-### Core Functionality
 - **Metadata Inspection**: View all metadata key-value pairs stored in the GGUF file
 - **Tensor Information**: Display tensor names, shapes, and quantization types
 - **Search Functionality**: Search through metadata and tensor information
 - **Array Truncation**: Configurable maximum number of array elements to display
+- **Export Capabilities**: Export model information in JSON format
 - **Context Menu Integration**: Right-click on `.gguf` files in the explorer to open them
 - **Webview Interface**: Clean, responsive interface for browsing file contents
 
@@ -153,7 +148,13 @@ Potential future improvements include:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please read our updated contribution guidelines before submitting a Pull Request.
+
+**How to contribute:**
+1. Fork the repository and create a new branch for your feature or bug fix.
+2. Ensure all tests pass locally (`npm test`).
+3. Follow the code style guidelines (ESLint + Prettier).
+4. Submit a pull request with a clear description of changes.
 
 ## License
 
@@ -161,7 +162,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Version:** 1.2.0
+**Version:** 0.1.3
 
 **Author:** Your Name <you@example.com>
 

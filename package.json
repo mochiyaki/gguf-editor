@@ -2,7 +2,7 @@
   "name": "gguf-editor",
   "displayName": "gguf editor",
   "description": "An extension for viewing, inspecting and editing GGUF model files",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "gguf",
   "author": {
     "name": "gguf",
@@ -19,6 +19,7 @@
     "vscode": "^1.105.1"
   },
   "categories": [
+    "Machine Learning",
     "Other"
   ],
   "activationEvents": [],

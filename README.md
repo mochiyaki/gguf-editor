@@ -66,7 +66,7 @@ The extension opens a webview panel displaying:
 - **File Header**: Shows the filename
 - **Search Bar**: Filter metadata and tensors by search term
 - **Metadata Table**: Key-value pairs from the file's metadata
-- **Tensors Table**: Information about each tensor including name, shape, precision type, and removal actions
+- **Tensors Table**: Information about each tensor including name, shape, precision type, and hide/removal actions
 
 ### Search Functionality
 
@@ -120,7 +120,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Acknowledgments
 
-AgainstEntropy (MIT license), huggingface.js (MIT license), llama.cpp (MIT license), etc., and thanks to all contributors for their hard work.
+AgainstEntropy (MIT License), huggingface.js (MIT License), llama.cpp (MIT License), etc., and thanks to all contributors for their hard work.
 
 ## License
 

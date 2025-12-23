@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { htmlContentTemplate, replaceMark } from "./constants";
-// import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@huggingface/gguf";
 import { GGMLQuantizationType, gguf, buildGgufHeader, GGUFValueType, serializeGgufMetadata } from "@gguf/editor";
 
 export async function getWebviewContent(
@@ -57,7 +56,10 @@ async function getGGUFInfo(uri: vscode.Uri, searchTerm: string = "") {
           <td><input type="text" class="tensor-name-input" data-index="${index}" value="${tensorInfo.name}" style="width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 4px;" /></td>
           <td>[${tensorInfo.shape.join(", ")}]</td>
           <td>${GGMLQuantizationType[tensorInfo.dtype]}</td>
-          <td><button class="delete-tensor-btn" data-index="${index}" onclick="deleteTensor(${index})" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">Delete</button></td>
+          <td>
+            <button class="hide-tensor-btn" data-index="${index}" onclick="hideTensor(${index})" style="background: #ffa500; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-right: 4px;">Hide</button>
+            <button class="delete-tensor-btn" data-index="${index}" onclick="deleteTensor(${index})" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">Delete</button>
+          </td>
         </tr>`
     )
     .join("");

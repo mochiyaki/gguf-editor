@@ -199,6 +199,7 @@ export const htmlContentTemplate = `<!DOCTYPE html>
         }
 
         let deletedTensors = [];
+        let hiddenTensors = new Set();
 
         function deleteTensor(index) {
             if (confirm('Are you sure you want to remove this tensor from the editor? This will exclude it when saving changes.')) {
@@ -209,6 +210,22 @@ export const htmlContentTemplate = `<!DOCTYPE html>
                 }
                 // Track deleted tensors
                 deletedTensors.push(index);
+            }
+        }
+
+        function hideTensor(index) {
+            const row = document.querySelector('tr[data-tensor-index="' + index + '"]');
+            const button = row.querySelector('.hide-tensor-btn');
+            if (hiddenTensors.has(index)) {
+                // Show the tensor
+                row.style.display = '';
+                button.textContent = 'Hide';
+                hiddenTensors.delete(index);
+            } else {
+                // Hide the tensor
+                row.style.display = 'none';
+                button.textContent = 'Show';
+                hiddenTensors.add(index);
             }
         }
 

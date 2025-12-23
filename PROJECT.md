@@ -162,7 +162,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Version:** 0.1.3
+**Version:** 0.1.4
 
 **Author:** Your Name <you@example.com>
 

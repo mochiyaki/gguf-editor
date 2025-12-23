@@ -5,6 +5,8 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
 ## Releases
 
 - Initial release (sort by latest)
+- 0.1.4
+  - simplify heading
 - 0.1.3
   - hide tensor
 - 0.1.2

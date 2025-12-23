@@ -128,7 +128,7 @@ export const htmlContentTemplate = `<!DOCTYPE html>
 <body>
     <div class="fade-in" id="content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1>GGUF file: ${replaceMark}{fileName}${replaceMark}</h1>
+            <h1>${replaceMark}{fileName}${replaceMark}</h1>
             <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">Dark Mode</button>
         </div>
 

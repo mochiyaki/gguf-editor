@@ -42,7 +42,7 @@ gguf-editor/
 
 ## Requirements
 
-- Visual Studio Code version 1.107.0 or higher
+- Visual Studio Code version 1.105.1 or higher
 - GGUF files to inspect (typically model files from AI/ML projects)
 
 ## Installation
@@ -117,6 +117,10 @@ This creates a `.vsix` file in the root directory that can be installed in VS Co
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Acknowledgments
+
+AgainstEntropy (MIT license), huggingface.js (MIT license), llama.cpp (MIT license), etc., and thanks to all contributors for their hard work.
 
 ## License
 

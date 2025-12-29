@@ -42,7 +42,7 @@ gguf-editor/
 
 ## Requirements
 
-- Visual Studio Code version 1.105.1 or higher
+- Visual Studio Code version 1.104.0 or higher
 - GGUF files to inspect (typically model files from AI/ML projects)
 
 ## Installation

@@ -5,6 +5,8 @@ All notable changes to the "gguf-editor" extension will be documented in this fi
 ## Releases
 
 - Initial release (sort by latest)
+- 0.1.5
+  - extend compatible version (i.e., antigravity, cursor)
 - 0.1.4
   - simplify heading
 - 0.1.3
